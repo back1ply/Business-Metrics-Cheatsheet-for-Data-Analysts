@@ -202,6 +202,97 @@ body {
     color: var(--text-tertiary);
 }
 
+/* Search Clear Button */
+.search-clear {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    font-size: 1.1rem;
+    line-height: 1;
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.search-clear:hover {
+    color: var(--text-primary);
+    background: var(--bg-tertiary);
+}
+
+.search-box .search-input {
+    padding-right: 32px;
+}
+
+/* Export Button */
+.export-btn {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.15s;
+}
+
+.export-btn:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* Filter Dropdowns */
+.filter-dropdown .dropdown-menu {
+    max-height: 280px;
+    overflow-y: auto;
+}
+
+/* Multi-select checkbox style */
+.dropdown-item .checkbox {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    font-size: 11px;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.dropdown-item.checked .checkbox {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+}
+
+.dropdown-item .filter-label {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Clear all button in filter */
+.dropdown-item.filter-clear {
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 4px;
+    padding-bottom: 8px;
+}
+
+.dropdown-item.filter-clear:hover {
+    color: var(--accent);
+}
+
 /* Count badge */
 .count-badge {
     color: var(--text-tertiary);
@@ -251,6 +342,49 @@ th {
     z-index: 10;
 }
 
+/* Sticky first column */
+th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 15;
+    background: var(--bg-secondary);
+}
+
+td:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 5;
+    background: var(--bg-primary);
+}
+
+tr:hover td:first-child {
+    background: var(--bg-hover);
+}
+
+/* Sticky column shadow indicator */
+.table-scroll {
+    position: relative;
+}
+
+th:first-child::after,
+td:first-child::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -6px;
+    bottom: 0;
+    width: 6px;
+    background: linear-gradient(to right, rgba(0,0,0,0.15), transparent);
+    opacity: 0;
+    transition: opacity 0.15s;
+    pointer-events: none;
+}
+
+.table-scroll.scrolled th:first-child::after,
+.table-scroll.scrolled td:first-child::after {
+    opacity: 1;
+}
+
 th:hover {
     background: var(--bg-tertiary);
     color: var(--text-primary);
@@ -283,6 +417,17 @@ tbody tr {
 
 tbody tr:hover {
     background: var(--bg-hover);
+}
+
+/* Keyboard selection highlight */
+tbody tr.row-selected {
+    background: var(--bg-tertiary);
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
+}
+
+tbody tr.row-selected td:first-child {
+    background: var(--bg-tertiary);
 }
 
 .cell-name {
@@ -405,6 +550,66 @@ tbody tr:hover {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+}
+
+/* Card View Grouping */
+.card-group {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+}
+
+.card-group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.15s;
+}
+
+.card-group-header:hover {
+    background: var(--bg-tertiary);
+}
+
+.card-group-header .group-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.card-group-header .group-toggle svg {
+    width: 16px;
+    height: 16px;
+    transition: transform 0.2s;
+    color: var(--text-tertiary);
+}
+
+.card-group-header.collapsed .group-toggle svg {
+    transform: rotate(-90deg);
+}
+
+.card-group-header .group-count {
+    color: var(--text-tertiary);
+    font-size: 0.8rem;
+}
+
+.card-group-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.card-group-content.hidden {
+    display: none;
 }
 
 /* Modal */
