@@ -4,8 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Metrics Cheatsheet for Data Analysts</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='12'/><rect fill='%2388c0ff' x='15' y='55' width='15' height='30' rx='2'/><rect fill='%2388c0ff' x='42.5' y='35' width='15' height='50' rx='2'/><rect fill='%2388c0ff' x='70' y='20' width='15' height='65' rx='2'/><polyline fill='none' stroke='%23ff6b6b' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' points='15,50 35,40 55,45 85,15'/><circle fill='%23ff6b6b' cx='85' cy='15' r='5'/></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23191919' width='100' height='100' rx='12'/><rect fill='%232eaadc' x='15' y='55' width='15' height='30' rx='2'/><rect fill='%232eaadc' x='42.5' y='35' width='15' height='50' rx='2'/><rect fill='%232eaadc' x='70' y='20' width='15' height='65' rx='2'/><polyline fill='none' stroke='%23e03e3e' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' points='15,50 35,40 55,45 85,15'/><circle fill='%23e03e3e' cx='85' cy='15' r='5'/></svg>">
     <style>
+        :root {
+            --bg-primary: #191919;
+            --bg-secondary: #202020;
+            --bg-tertiary: #2f2f2f;
+            --bg-hover: #363636;
+            --text-primary: rgba(255, 255, 255, 0.9);
+            --text-secondary: rgba(255, 255, 255, 0.6);
+            --text-tertiary: rgba(255, 255, 255, 0.4);
+            --border-color: rgba(255, 255, 255, 0.08);
+            --accent: #2eaadc;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
@@ -13,230 +25,618 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-            background: #1a1a2e;
-            color: #eee;
+            font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 20px;
+            line-height: 1.5;
         }
 
-        h1 {
-            text-align: center;
-            margin-bottom: 10px;
-            font-size: 1.8rem;
-            color: #fff;
+        /* Header */
+        .header {
+            padding: 60px 40px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
 
-        .hint {
-            background: #2d2d44;
-            padding: 12px 20px;
-            border-radius: 8px;
-            margin-bottom: 20px;
+        .header h1 {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: -0.02em;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Toolbar */
+        .toolbar {
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-size: 0.9rem;
-        }
-
-        .hint::before {
-            content: "💡";
-        }
-
-        .tabs {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            gap: 12px;
+            padding: 12px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
             flex-wrap: wrap;
         }
 
-        .tab {
-            background: #2d2d44;
-            border: none;
-            color: #ccc;
-            padding: 10px 16px;
+        /* View Tabs - Notion style */
+        .view-tabs {
+            display: flex;
+            gap: 2px;
+            background: var(--bg-tertiary);
+            padding: 3px;
             border-radius: 6px;
+        }
+
+        .view-tab {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 6px;
-            transition: all 0.2s;
+            transition: all 0.15s;
         }
 
-        .tab:hover {
-            background: #3d3d5c;
+        .view-tab:hover {
+            color: var(--text-primary);
+            background: var(--bg-hover);
         }
 
-        .tab.active {
-            background: #4a4a6a;
-            color: #fff;
+        .view-tab.active {
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
         }
 
-        .tab-icon {
-            font-size: 0.9rem;
+        .view-tab svg {
+            width: 14px;
+            height: 14px;
             opacity: 0.7;
         }
 
-        .search-container {
-            margin-bottom: 20px;
+        /* Group By Dropdown */
+        .dropdown {
+            position: relative;
+        }
+
+        .dropdown-btn {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.15s;
+        }
+
+        .dropdown-btn:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .dropdown-btn.has-value {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 4px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 4px;
+            min-width: 160px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+            z-index: 100;
+            display: none;
+        }
+
+        .dropdown-menu.open {
+            display: block;
+        }
+
+        .dropdown-item {
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dropdown-item:hover {
+            background: var(--bg-hover);
+            color: var(--text-primary);
+        }
+
+        .dropdown-item.active {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Search */
+        .search-box {
+            position: relative;
+            flex: 1;
+            max-width: 280px;
+        }
+
+        .search-box svg {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            color: var(--text-tertiary);
         }
 
         .search-input {
             width: 100%;
-            max-width: 400px;
-            padding: 10px 16px;
+            padding: 7px 12px 7px 32px;
             border-radius: 6px;
-            border: 1px solid #3d3d5c;
-            background: #2d2d44;
-            color: #fff;
-            font-size: 0.9rem;
+            border: 1px solid var(--border-color);
+            background: transparent;
+            color: var(--text-primary);
+            font-size: 0.85rem;
+            transition: all 0.15s;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: var(--bg-secondary);
         }
 
         .search-input::placeholder {
-            color: #888;
+            color: var(--text-tertiary);
         }
 
-        .table-container {
-            overflow-x: auto;
+        /* Count badge */
+        .count-badge {
+            color: var(--text-tertiary);
+            font-size: 0.8rem;
+            margin-left: auto;
+        }
+
+        /* Content Area */
+        .content {
+            padding: 0 40px 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Table View */
+        .table-wrapper {
+            border: 1px solid var(--border-color);
             border-radius: 8px;
-            background: #2d2d44;
+            overflow: hidden;
+        }
+
+        .table-scroll {
+            overflow-x: auto;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-
-        th, td {
-            padding: 12px 16px;
-            text-align: left;
-            border-bottom: 1px solid #3d3d5c;
+            font-size: 0.875rem;
         }
 
         th {
-            background: #252540;
-            font-weight: 600;
+            background: var(--bg-secondary);
+            padding: 8px 12px;
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
             cursor: pointer;
             user-select: none;
-            white-space: nowrap;
             position: sticky;
             top: 0;
+            z-index: 10;
         }
 
         th:hover {
-            background: #3d3d5c;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
         }
 
-        th .sort-indicator {
-            margin-left: 6px;
-            opacity: 0.5;
+        th .sort-icon {
+            margin-left: 4px;
+            opacity: 0.4;
+            font-size: 0.7rem;
         }
 
-        th.sorted .sort-indicator {
+        th.sorted .sort-icon {
             opacity: 1;
+            color: var(--accent);
         }
 
-        tr:hover {
-            background: #353550;
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: top;
         }
 
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tbody tr {
+            transition: background 0.1s;
+        }
+
+        tbody tr:hover {
+            background: var(--bg-hover);
+        }
+
+        /* Name column styling */
+        .cell-name {
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        /* Property Tags */
+        .tag {
+            display: inline-flex;
+            align-items: center;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .tag-industry {
+            background: rgba(46, 170, 220, 0.15);
+            color: #2eaadc;
+        }
+
+        .tag-category {
+            background: rgba(155, 89, 182, 0.15);
+            color: #9b59b6;
+        }
+
+        .tag-stakeholder {
+            background: rgba(46, 204, 113, 0.15);
+            color: #2ecc71;
+        }
+
+        /* Group Headers */
         .group-header {
-            background: #1e1e38 !important;
-            font-weight: 600;
+            background: var(--bg-secondary) !important;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .group-header:hover {
+            background: var(--bg-tertiary) !important;
         }
 
         .group-header td {
-            padding: 14px 16px;
-            font-size: 0.95rem;
-            color: #88c0ff;
+            padding: 10px 12px;
+            font-weight: 600;
+            color: var(--text-primary);
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .indent {
-            padding-left: 32px;
+        .group-toggle {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .tag {
-            display: inline-block;
-            background: #3d3d5c;
-            padding: 2px 8px;
-            border-radius: 4px;
-            margin: 2px;
+        .group-toggle svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s;
+            color: var(--text-tertiary);
+        }
+
+        .group-header.collapsed .group-toggle svg {
+            transform: rotate(-90deg);
+        }
+
+        .group-count {
+            color: var(--text-tertiary);
+            font-weight: 400;
             font-size: 0.8rem;
+            margin-left: 6px;
         }
 
-        .no-results {
+        .group-row.hidden {
+            display: none;
+        }
+
+        /* Card View */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .card:hover {
+            background: var(--bg-tertiary);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .card-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .card-definition {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            line-height: 1.5;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            max-width: 700px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .modal-header {
+            padding: 24px 24px 16px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .modal-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .modal-body {
+            padding: 20px 24px 24px;
+        }
+
+        .modal-section {
+            margin-bottom: 20px;
+        }
+
+        .modal-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .modal-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-tertiary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .modal-value {
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-tertiary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        .modal-close:hover {
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+        }
+
+        /* Empty State */
+        .empty-state {
             text-align: center;
-            padding: 40px;
-            color: #888;
+            padding: 60px 20px;
+            color: var(--text-tertiary);
         }
 
+        .empty-state svg {
+            width: 48px;
+            height: 48px;
+            margin-bottom: 16px;
+            opacity: 0.4;
+        }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .tabs {
-                gap: 4px;
+            .header, .toolbar, .content {
+                padding-left: 20px;
+                padding-right: 20px;
             }
-            .tab {
-                padding: 8px 12px;
-                font-size: 0.8rem;
+
+            .header h1 {
+                font-size: 1.5rem;
             }
-            th, td {
-                padding: 8px 10px;
-                font-size: 0.8rem;
+
+            .toolbar {
+                gap: 8px;
+            }
+
+            .search-box {
+                order: -1;
+                flex: 1 1 100%;
+                max-width: none;
+            }
+
+            .count-badge {
+                display: none;
+            }
+
+            .card-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Business Metrics Cheatsheet for Data Analysts</h1>
+    <header class="header">
+        <h1>Business Metrics Cheatsheet</h1>
+        <p>A comprehensive reference for data analysts</p>
+    </header>
 
-    <div class="hint">
-        Use the tabs above to sort or group the data by <strong>Industry</strong>, <strong>Category</strong>, or <strong>Stakeholder Team</strong>.
+    <div class="toolbar">
+        <div class="view-tabs">
+            <button class="view-tab active" data-view="table">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+                Table
+            </button>
+            <button class="view-tab" data-view="card">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+                Cards
+            </button>
+        </div>
+
+        <div class="dropdown" id="groupDropdown">
+            <button class="dropdown-btn" id="groupBtn">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                <span>Group</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><path d="M6 9l6 6 6-6"/></svg>
+            </button>
+            <div class="dropdown-menu" id="groupMenu">
+                <div class="dropdown-item" data-group="">None</div>
+                <div class="dropdown-item" data-group="Industry">Industry</div>
+                <div class="dropdown-item" data-group="Category (Industry Specific or Team)">Category</div>
+                <div class="dropdown-item" data-group="Stakeholder Team">Stakeholder</div>
+            </div>
+        </div>
+
+        <div class="search-box">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" class="search-input" placeholder="Search metrics..." id="searchInput">
+        </div>
+
+        <span class="count-badge" id="countBadge">0 metrics</span>
     </div>
 
-    <div class="tabs">
-        <button class="tab active" data-view="master"><span class="tab-icon">☰</span> Master Table</button>
-        <button class="tab" data-view="table-industry"><span class="tab-icon">☰</span> Sort by Industry</button>
-        <button class="tab" data-view="table-category"><span class="tab-icon">☰</span> Sort by Category</button>
-        <button class="tab" data-view="table-stakeholder"><span class="tab-icon">☰</span> Sort by Stakeholder</button>
-        <button class="tab" data-view="grouped-industry"><span class="tab-icon">⊞</span> Group by Industry</button>
-        <button class="tab" data-view="grouped-category"><span class="tab-icon">⊞</span> Group by Category</button>
-        <button class="tab" data-view="grouped-stakeholder"><span class="tab-icon">⊞</span> Group by Stakeholder</button>
-    </div>
+    <main class="content">
+        <div class="table-wrapper" id="tableView">
+            <div class="table-scroll">
+                <table>
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
 
-    <div class="search-container">
-        <input type="text" class="search-input" placeholder="Search metrics..." id="searchInput">
-    </div>
+        <div class="card-grid" id="cardView" style="display: none;"></div>
+    </main>
 
-    <div class="table-container">
-        <table id="dataTable">
-            <thead id="tableHead"></thead>
-            <tbody id="tableBody"></tbody>
-        </table>
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal" style="position: relative;">
+            <button class="modal-close" id="modalClose">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="20" height="20"><path d="M18 6L6 18M6 6l12 12"/></svg>
+            </button>
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitle"></h2>
+                <div class="modal-tags" id="modalTags"></div>
+            </div>
+            <div class="modal-body" id="modalBody"></div>
+        </div>
     </div>
 
     <script>
+        // State
         let data = [];
-        let currentView = 'master';
+        let currentView = 'table';
+        let currentGroup = '';
         let searchTerm = '';
+        let collapsedGroups = new Set();
+        let sortConfig = [
+            { key: 'Industry', direction: 'asc' },
+            { key: 'Name', direction: 'asc' }
+        ];
 
         // Column definitions
         const columns = [
-            { key: 'Name', label: 'Name' },
-            { key: 'Industry', label: 'Industry' },
-            { key: 'Category (Industry Specific or Team)', label: 'Category' },
-            { key: 'Stakeholder Team', label: 'Stakeholder Team' },
+            { key: 'Name', label: 'Name', primary: true },
+            { key: 'Industry', label: 'Industry', tag: 'industry' },
+            { key: 'Category (Industry Specific or Team)', label: 'Category', tag: 'category' },
+            { key: 'Stakeholder Team', label: 'Stakeholder', tag: 'stakeholder' },
             { key: 'Definition', label: 'Definition' },
             { key: 'Why It Matters', label: 'Why It Matters' },
             { key: 'Example in a Sentence', label: 'Example' },
-            { key: 'Large Companies', label: 'Large Companies' }
-        ];
-
-        // Default sort: Industry, Name, Category, Stakeholder Team (all ascending)
-        let sortConfig = [
-            { key: 'Industry', direction: 'asc' },
-            { key: 'Name', direction: 'asc' },
-            { key: 'Category (Industry Specific or Team)', direction: 'asc' },
-            { key: 'Stakeholder Team', direction: 'asc' }
+            { key: 'Large Companies', label: 'Companies' }
         ];
 
         // Parse CSV
@@ -244,7 +644,6 @@
             const lines = text.trim().split('\n');
             const headers = parseCSVLine(lines[0]);
             const result = [];
-
             for (let i = 1; i < lines.length; i++) {
                 if (lines[i].trim()) {
                     const values = parseCSVLine(lines[i]);
@@ -262,7 +661,6 @@
             const result = [];
             let current = '';
             let inQuotes = false;
-
             for (let i = 0; i < line.length; i++) {
                 const char = line[i];
                 if (char === '"') {
@@ -278,7 +676,15 @@
             return result;
         }
 
-        // Sort data
+        // Data operations
+        function filterData(dataToFilter) {
+            if (!searchTerm) return dataToFilter;
+            const term = searchTerm.toLowerCase();
+            return dataToFilter.filter(row =>
+                Object.values(row).some(val => val.toLowerCase().includes(term))
+            );
+        }
+
         function sortData(dataToSort) {
             return [...dataToSort].sort((a, b) => {
                 for (const sort of sortConfig) {
@@ -291,19 +697,8 @@
             });
         }
 
-        // Filter data
-        function filterData(dataToFilter) {
-            if (!searchTerm) return dataToFilter;
-            const term = searchTerm.toLowerCase();
-            return dataToFilter.filter(row =>
-                Object.values(row).some(val =>
-                    val.toLowerCase().includes(term)
-                )
-            );
-        }
-
-        // Group data
         function groupData(dataToGroup, groupKey) {
+            if (!groupKey) return [['', dataToGroup]];
             const groups = {};
             dataToGroup.forEach(row => {
                 const key = row[groupKey] || 'Other';
@@ -313,146 +708,238 @@
             return Object.entries(groups).sort((a, b) => a[0].localeCompare(b[0]));
         }
 
-        // Render table header
-        function renderHeader(viewColumns) {
+        // Render functions
+        function renderTag(value, type) {
+            if (!value) return '';
+            return `<span class="tag tag-${type}">${value}</span>`;
+        }
+
+        function renderCell(row, col) {
+            const value = row[col.key] || '';
+            if (col.primary) {
+                return `<span class="cell-name">${value}</span>`;
+            }
+            if (col.tag) {
+                return renderTag(value, col.tag);
+            }
+            return value;
+        }
+
+        function renderTableHeader() {
             const thead = document.getElementById('tableHead');
-            thead.innerHTML = `<tr>${viewColumns.map(col => {
+            thead.innerHTML = `<tr>${columns.map(col => {
                 const sortInfo = sortConfig.find(s => s.key === col.key);
-                const isSorted = sortInfo ? 'sorted' : '';
-                const indicator = sortInfo ? (sortInfo.direction === 'asc' ? '↑' : '↓') : '↕';
-                return `<th class="${isSorted}" data-key="${col.key}">${col.label}<span class="sort-indicator">${indicator}</span></th>`;
+                const sortedClass = sortInfo ? 'sorted' : '';
+                const icon = sortInfo ? (sortInfo.direction === 'asc' ? '↑' : '↓') : '↕';
+                return `<th class="${sortedClass}" data-key="${col.key}">${col.label}<span class="sort-icon">${icon}</span></th>`;
             }).join('')}</tr>`;
         }
 
-        // Render table rows
-        function renderRows(rows, viewColumns, indent = false) {
-            return rows.map(row => `<tr>
-                ${viewColumns.map((col, i) => `<td class="${indent && i === 0 ? 'indent' : ''}">${row[col.key] || ''}</td>`).join('')}
-            </tr>`).join('');
+        function renderTableRows(rows, groupName = '') {
+            return rows.map((row, idx) => `
+                <tr class="group-row${collapsedGroups.has(groupName) ? ' hidden' : ''}" data-group="${groupName}" data-index="${idx}" onclick="openModal(${data.indexOf(row)})">
+                    ${columns.map(col => `<td>${renderCell(row, col)}</td>`).join('')}
+                </tr>
+            `).join('');
         }
 
-        // Render grouped view
-        function renderGroupedView(groupKey, viewColumns) {
+        function renderTableView() {
             const filtered = filterData(data);
             const sorted = sortData(filtered);
-            const groups = groupData(sorted, groupKey);
+            const groups = groupData(sorted, currentGroup);
 
+            renderTableHeader();
             const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = groups.map(([groupName, rows]) => `
-                <tr class="group-header"><td colspan="${viewColumns.length}">${groupName} (${rows.length})</td></tr>
-                ${renderRows(rows, viewColumns, true)}
+
+            if (sorted.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="${columns.length}"><div class="empty-state"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>No metrics found</p></div></td></tr>`;
+                return;
+            }
+
+            if (currentGroup) {
+                tbody.innerHTML = groups.map(([groupName, rows]) => `
+                    <tr class="group-header${collapsedGroups.has(groupName) ? ' collapsed' : ''}" data-group="${groupName}">
+                        <td colspan="${columns.length}">
+                            <span class="group-toggle">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                                ${groupName}
+                            </span>
+                            <span class="group-count">${rows.length}</span>
+                        </td>
+                    </tr>
+                    ${renderTableRows(rows, groupName)}
+                `).join('');
+            } else {
+                tbody.innerHTML = renderTableRows(sorted);
+            }
+
+            updateCount(sorted.length);
+        }
+
+        function renderCardView() {
+            const filtered = filterData(data);
+            const sorted = sortData(filtered);
+            const cardGrid = document.getElementById('cardView');
+
+            if (sorted.length === 0) {
+                cardGrid.innerHTML = `<div class="empty-state" style="grid-column: 1/-1;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><p>No metrics found</p></div>`;
+                return;
+            }
+
+            cardGrid.innerHTML = sorted.map((row, idx) => `
+                <div class="card" onclick="openModal(${data.indexOf(row)})">
+                    <div class="card-title">${row['Name'] || ''}</div>
+                    <div class="card-tags">
+                        ${renderTag(row['Industry'], 'industry')}
+                        ${renderTag(row['Category (Industry Specific or Team)'], 'category')}
+                        ${renderTag(row['Stakeholder Team'], 'stakeholder')}
+                    </div>
+                    <div class="card-definition">${row['Definition'] || ''}</div>
+                </div>
             `).join('');
 
-            if (groups.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="' + viewColumns.length + '" class="no-results">No results found</td></tr>';
+            updateCount(sorted.length);
+        }
+
+        function render() {
+            if (currentView === 'table') {
+                document.getElementById('tableView').style.display = 'block';
+                document.getElementById('cardView').style.display = 'none';
+                renderTableView();
+            } else {
+                document.getElementById('tableView').style.display = 'none';
+                document.getElementById('cardView').style.display = 'grid';
+                renderCardView();
             }
         }
 
-        // Render table view
-        function renderTableView(primarySortKey, viewColumns) {
-            // Set primary sort
-            sortConfig = [
-                { key: primarySortKey, direction: 'asc' },
-                { key: 'Name', direction: 'asc' },
-                { key: 'Category (Industry Specific or Team)', direction: 'asc' },
-                { key: 'Stakeholder Team', direction: 'asc' }
-            ].filter((v, i, a) => a.findIndex(t => t.key === v.key) === i);
-
-            renderHeader(viewColumns);
-            const filtered = filterData(data);
-            const sorted = sortData(filtered);
-
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = renderRows(sorted, viewColumns);
-
-            if (sorted.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="' + viewColumns.length + '" class="no-results">No results found</td></tr>';
-            }
+        function updateCount(count) {
+            document.getElementById('countBadge').textContent = `${count} metric${count !== 1 ? 's' : ''}`;
         }
 
-        // Render master view
-        function renderMasterView() {
-            sortConfig = [
-                { key: 'Industry', direction: 'asc' },
-                { key: 'Name', direction: 'asc' },
-                { key: 'Category (Industry Specific or Team)', direction: 'asc' },
-                { key: 'Stakeholder Team', direction: 'asc' }
+        // Modal
+        function openModal(index) {
+            const row = data[index];
+            if (!row) return;
+
+            document.getElementById('modalTitle').textContent = row['Name'] || '';
+            document.getElementById('modalTags').innerHTML = `
+                ${renderTag(row['Industry'], 'industry')}
+                ${renderTag(row['Category (Industry Specific or Team)'], 'category')}
+                ${renderTag(row['Stakeholder Team'], 'stakeholder')}
+            `;
+
+            const fields = [
+                { key: 'Definition', label: 'Definition' },
+                { key: 'Why It Matters', label: 'Why It Matters' },
+                { key: 'Example in a Sentence', label: 'Example' },
+                { key: 'Large Companies', label: 'Companies Using This Metric' }
             ];
 
-            renderHeader(columns);
-            const filtered = filterData(data);
-            const sorted = sortData(filtered);
+            document.getElementById('modalBody').innerHTML = fields
+                .filter(f => row[f.key])
+                .map(f => `
+                    <div class="modal-section">
+                        <div class="modal-label">${f.label}</div>
+                        <div class="modal-value">${row[f.key]}</div>
+                    </div>
+                `).join('');
 
-            const tbody = document.getElementById('tableBody');
-            tbody.innerHTML = renderRows(sorted, columns);
-
-            if (sorted.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="' + columns.length + '" class="no-results">No results found</td></tr>';
-            }
+            document.getElementById('modalOverlay').classList.add('open');
+            document.body.style.overflow = 'hidden';
         }
 
-        // Main render function
-        function render() {
-            switch (currentView) {
-                case 'table-industry':
-                    renderTableView('Industry', columns);
-                    break;
-                case 'table-category':
-                    renderTableView('Category (Industry Specific or Team)', columns);
-                    break;
-                case 'table-stakeholder':
-                    renderTableView('Stakeholder Team', columns);
-                    break;
-                case 'grouped-industry':
-                    renderHeader(columns);
-                    renderGroupedView('Industry', columns);
-                    break;
-                case 'grouped-category':
-                    renderHeader(columns);
-                    renderGroupedView('Category (Industry Specific or Team)', columns);
-                    break;
-                case 'grouped-stakeholder':
-                    renderHeader(columns);
-                    renderGroupedView('Stakeholder Team', columns);
-                    break;
-                case 'master':
-                default:
-                    renderMasterView();
-                    break;
-            }
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('open');
+            document.body.style.overflow = '';
         }
 
         // Event listeners
-        document.querySelectorAll('.tab').forEach(tab => {
+        document.querySelectorAll('.view-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 currentView = tab.dataset.view;
                 render();
             });
         });
 
+        // Group dropdown
+        const groupBtn = document.getElementById('groupBtn');
+        const groupMenu = document.getElementById('groupMenu');
+
+        groupBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            groupMenu.classList.toggle('open');
+        });
+
+        document.querySelectorAll('#groupMenu .dropdown-item').forEach(item => {
+            item.addEventListener('click', () => {
+                currentGroup = item.dataset.group;
+                collapsedGroups.clear();
+
+                document.querySelectorAll('#groupMenu .dropdown-item').forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+
+                const label = currentGroup ? item.textContent : 'Group';
+                groupBtn.querySelector('span').textContent = label;
+                groupBtn.classList.toggle('has-value', !!currentGroup);
+
+                groupMenu.classList.remove('open');
+                render();
+            });
+        });
+
+        document.addEventListener('click', () => {
+            groupMenu.classList.remove('open');
+        });
+
+        // Search
         document.getElementById('searchInput').addEventListener('input', (e) => {
             searchTerm = e.target.value;
             render();
         });
 
+        // Table sort
         document.getElementById('tableHead').addEventListener('click', (e) => {
             const th = e.target.closest('th');
             if (!th) return;
 
             const key = th.dataset.key;
-            const existingSort = sortConfig.find(s => s.key === key);
+            const existing = sortConfig.find(s => s.key === key);
 
-            if (existingSort) {
-                existingSort.direction = existingSort.direction === 'asc' ? 'desc' : 'asc';
-                // Move to front
-                sortConfig = [existingSort, ...sortConfig.filter(s => s.key !== key)];
+            if (existing) {
+                existing.direction = existing.direction === 'asc' ? 'desc' : 'asc';
+                sortConfig = [existing, ...sortConfig.filter(s => s.key !== key)];
             } else {
-                sortConfig = [{ key, direction: 'asc' }, ...sortConfig.slice(0, 3)];
+                sortConfig = [{ key, direction: 'asc' }, ...sortConfig.slice(0, 1)];
             }
 
             render();
+        });
+
+        // Group toggle
+        document.getElementById('tableBody').addEventListener('click', (e) => {
+            const header = e.target.closest('.group-header');
+            if (header) {
+                e.stopPropagation();
+                const group = header.dataset.group;
+                if (collapsedGroups.has(group)) {
+                    collapsedGroups.delete(group);
+                } else {
+                    collapsedGroups.add(group);
+                }
+                render();
+            }
+        });
+
+        // Modal
+        document.getElementById('modalClose').addEventListener('click', closeModal);
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === e.currentTarget) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeModal();
         });
 
         // Load data
@@ -464,7 +951,7 @@
             })
             .catch(err => {
                 console.error('Error loading CSV:', err);
-                document.getElementById('tableBody').innerHTML = '<tr><td class="no-results">Error loading data. Please ensure data/BMC_DB.csv exists.</td></tr>';
+                document.getElementById('tableBody').innerHTML = `<tr><td colspan="${columns.length}"><div class="empty-state"><p>Error loading data</p></div></td></tr>`;
             });
     </script>
 </body>
