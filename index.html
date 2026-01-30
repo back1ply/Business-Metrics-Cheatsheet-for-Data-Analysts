@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Business Metrics Cheatsheet for Data Analysts</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%231a1a2e' width='100' height='100' rx='12'/><rect fill='%2388c0ff' x='15' y='55' width='15' height='30' rx='2'/><rect fill='%2388c0ff' x='42.5' y='35' width='15' height='50' rx='2'/><rect fill='%2388c0ff' x='70' y='20' width='15' height='65' rx='2'/><polyline fill='none' stroke='%23ff6b6b' stroke-width='4' stroke-linecap='round' stroke-linejoin='round' points='15,50 35,40 55,45 85,15'/><circle fill='%23ff6b6b' cx='85' cy='15' r='5'/></svg>">
     <style>
         * {
             box-sizing: border-box;
@@ -151,7 +152,7 @@
             color: #88c0ff;
         }
 
-        .grouped-view .indent {
+        .indent {
             padding-left: 32px;
         }
 
@@ -189,17 +190,17 @@
     <h1>Business Metrics Cheatsheet for Data Analysts</h1>
 
     <div class="hint">
-        Use the tabs at the top of the table to switch between views (e.g., grouped by <strong>Industry</strong>, <strong>Category</strong>, or <strong>Stakeholder Team</strong>).
+        Use the tabs above to sort or group the data by <strong>Industry</strong>, <strong>Category</strong>, or <strong>Stakeholder Team</strong>.
     </div>
 
     <div class="tabs">
-        <button class="tab" data-view="table-industry"><span class="tab-icon">☰</span> By Industry</button>
-        <button class="tab" data-view="table-category"><span class="tab-icon">☰</span> By Category</button>
-        <button class="tab" data-view="table-stakeholder"><span class="tab-icon">☰</span> By Stakeholder</button>
-        <button class="tab" data-view="grouped-industry"><span class="tab-icon">⊞</span> By Industry</button>
-        <button class="tab" data-view="grouped-category"><span class="tab-icon">⊞</span> By Category</button>
-        <button class="tab" data-view="grouped-stakeholder"><span class="tab-icon">⊞</span> By Stakeholder</button>
         <button class="tab active" data-view="master"><span class="tab-icon">☰</span> Master Table</button>
+        <button class="tab" data-view="table-industry"><span class="tab-icon">☰</span> Sort by Industry</button>
+        <button class="tab" data-view="table-category"><span class="tab-icon">☰</span> Sort by Category</button>
+        <button class="tab" data-view="table-stakeholder"><span class="tab-icon">☰</span> Sort by Stakeholder</button>
+        <button class="tab" data-view="grouped-industry"><span class="tab-icon">⊞</span> Group by Industry</button>
+        <button class="tab" data-view="grouped-category"><span class="tab-icon">⊞</span> Group by Category</button>
+        <button class="tab" data-view="grouped-stakeholder"><span class="tab-icon">⊞</span> Group by Stakeholder</button>
     </div>
 
     <div class="search-container">
@@ -392,8 +393,6 @@
 
         // Main render function
         function render() {
-            const viewColumns = currentView === 'master' ? columns : columns;
-
             switch (currentView) {
                 case 'table-industry':
                     renderTableView('Industry', columns);
